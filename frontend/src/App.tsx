@@ -26,6 +26,7 @@ import EmailValidationComponent from "./components/email_validation/email.valida
 import { USER_ROLE } from "./constants/role";
 import PostListsComponent from "./components/dashboard/posts/post_lists.component";
 import ProfileComponent from "./components/dashboard/profile/profile.component";
+import TemplatesComponent from "./components/templates/templates.component";
 
 const ProtectedRoute = ({
   element,
@@ -54,6 +55,14 @@ function App() {
             <RootLayout>
               <HeroSectionComponent />
               <HomeComponent />
+            </RootLayout>
+          }
+        />
+        <Route
+          path="/templates"
+          element={
+            <RootLayout>
+              <TemplatesComponent />
             </RootLayout>
           }
         />
