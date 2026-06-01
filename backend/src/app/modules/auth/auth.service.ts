@@ -10,6 +10,7 @@ import logger from "../../../utils/logger.util";
 import config from "../../../config";
 import ApiError from "../../../errors/api_error";
 import { IUser } from "../user/user.interface";
+import { USER_STATUS } from "../../../enums/user_status";
 import { OTPModel } from "../verify_email/otp.model";
 import { RefreshSession } from "./refresh_session.model";
 import { VerifyEmailService } from "../verify_email/verify_email.service";
@@ -56,6 +57,10 @@ const login = async (payload: AuthModel & { rememberMe?: boolean }) => {
   const isExistUser = await User.findOne({ email: userEmail });
   if (!isExistUser) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found!");
+  }
+
+  if (isExistUser.status !== USER_STATUS.ACTIVE) {
+    throw new ApiError(httpStatus.FORBIDDEN, "Account is not active");
   }
 
   // Check if user has password (Google users might not)
@@ -263,6 +268,8 @@ const googleLogin = async (payload: { token: string }) => {
       };
 
       user = await User.create(newUser);
+    } else if (user.status !== USER_STATUS.ACTIVE) {
+      throw new ApiError(httpStatus.FORBIDDEN, "Account is not active");
     }
 
     const accessToken = issueAccessToken(user);
