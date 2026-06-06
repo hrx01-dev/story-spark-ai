@@ -24,8 +24,6 @@ random.seed(SEED)
 np.random.seed(SEED)
 tf.random.set_seed(SEED)
 
-
-
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from scorer import build_model, MAX_VOCAB, MAX_LEN, SAVE_DIR
